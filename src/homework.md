@@ -20,3 +20,8 @@ push all code to remote origin
 -Install Postman app make a workspace / collectin > test API call
 
 -Write logic to handle GET,POST, PATCH, DELETE API calls and test them on Postman
+
+-Explore routing use of ?,+,(),* and regex in routes /a/ , /.*fly$/
+-Reading the query params in the routes
+-reading the dynamic routes 
+
