@@ -34,3 +34,4 @@ push all code to remote origin
 -**Difference app.use and app.all
 -Write a dummy auth middleware for admin 
 -Write a dummy auth middleware for al user routes, except /user/login
+-Error Handling using app.use("/",(err,req,res,next) = {});
