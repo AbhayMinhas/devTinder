@@ -25,3 +25,12 @@ push all code to remote origin
 -Reading the query params in the routes
 -reading the dynamic routes 
 
+-Multiple route Handlers - Play with the code
+-next()
+-next function and errors along with res.send()
+-app.use("/route",rH,[],dfj.....)
+-**what is a Middleware? why do we need it?
+-**How express JS basically handles requests behind the scenes
+-**Difference app.use and app.all
+-Write a dummy auth middleware for admin 
+-Write a dummy auth middleware for al user routes, except /user/login
