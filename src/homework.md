@@ -2,7 +2,7 @@ Create a repository
 Initailize the repository
 Find the diffrence node_modules,package.json,package-lock.json
 Install express
-Create a server 
+Create a server
 Listen to port 7777
 Write request handlers for /test, /hello
 install nodemon and update scripts inside package.json
@@ -23,15 +23,23 @@ push all code to remote origin
 
 -Explore routing use of ?,+,(),* and regex in routes /a/ , /.*fly$/
 -Reading the query params in the routes
--reading the dynamic routes 
+-reading the dynamic routes
 
 -Multiple route Handlers - Play with the code
 -next()
 -next function and errors along with res.send()
--app.use("/route",rH,[],dfj.....)
--**what is a Middleware? why do we need it?
--**How express JS basically handles requests behind the scenes
--**Difference app.use and app.all
--Write a dummy auth middleware for admin 
+-app.use("/route",rH,[],dfj.....) -**what is a Middleware? why do we need it? -**How express JS basically handles requests behind the scenes
+-\*\*Difference app.use and app.all
+-Write a dummy auth middleware for admin
 -Write a dummy auth middleware for al user routes, except /user/login
--Error Handling using app.use("/",(err,req,res,next) = {});
+-Error Handling using app.use("/",(err,req,res,next) = {}); keep it at end of the application anything breaks it will handle (best preactice to use try catch)
+
+-Create a free cluster on MongoDb official website (Mongo Atlas)
+-Install mongoose library 
+-Connet your application to the Database "Connnection-url"/devTinder
+-Call the connectDB function and connect ot database before starting application on 7777
+
+-Create a userSchema & user Model
+-Create POST /signup API to add data to database
+-Push some doucuments using API calls from postman
+-Error Handling using try, catch
