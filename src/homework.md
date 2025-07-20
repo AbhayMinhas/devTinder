@@ -35,7 +35,7 @@ push all code to remote origin
 -Error Handling using app.use("/",(err,req,res,next) = {}); keep it at end of the application anything breaks it will handle (best preactice to use try catch)
 
 -Create a free cluster on MongoDb official website (Mongo Atlas)
--Install mongoose library 
+-Install mongoose library
 -Connet your application to the Database "Connnection-url"/devTinder
 -Call the connectDB function and connect ot database before starting application on 7777
 
@@ -43,3 +43,7 @@ push all code to remote origin
 -Create POST /signup API to add data to database
 -Push some doucuments using API calls from postman
 -Error Handling using try, catch
+
+-JS object vs JSON (difference )-why and when to use
+-Add the express.json middleware to your app
+-Make your signup API dynamic to recive data form the end user(browser/postman/anyone outeside your server hitting that api can create a user)

@@ -1,77 +1,77 @@
 const express = require("express");
 
-const { connectDB } = require("./config/database");
-//library mongoose has sucessfully established the connection with the database //this is refering to the cluster
-// inside the cluser there are multiple type of database
-
-/*we need to first connect to the database then listen to the server
-if server starts first and api req is made by user to db but db is not connected then it will be a problem .
- */
 const app = express();
-const User = require('./models/user');
 
-//using this post method & create an api which will signup the user
+const { connectDB } = require("./config/database");
+
+const User = require("./models/user");
+
+//how to use the middleware??like this
+app.use(express.json());
+//middleware activated for all the routes
+//this request handler will run on every req that comes to our server
+//app.use + no route given + pass a function work for all the routes
+
+//**express.json()->reads the json object converts it into js object and adds that js obj back to req object in the body
+//**now the req.body is a js object and we are able to read body  */
+
+//* Uncomment form here once
+// app.post("/signup", async (req, res) => {
+//   //req -->whole request that postman has sent
+//   //express convert req to object and it has given to us to use it
+//   //data sent is also a part of this req
+//   //cannot read data directly form here(req)
+
+//   // console.log(req);
+//   /*<ref *2> IncomingMessage {
+//   _events: {
+//     close: undefined,
+//     error: undefined,
+//     data: undefined,
+//     end: undefined,
+//     readable: undefined
+//   },
+//   _readableState: ReadableState {*/
+//   //this incoming message is like a readable stream data is sent in chunks
+
+//   //we want to read the data which is in the body of this request
+
+//   console.log(req.body);
+//   //undefined
+//   //getting the body as undefined
+//   //reason : - the data sent over here is in json format and our server is not able to read that json data
+//   //to read that json data we will need a middleware
+//   //we will use this middleware for almost all api's
+
+//   /*middleware that checks the incoming request and convert json into a js object put it into the body and give us access to the data*/
+
+//   //Middleware Given to us by express
+//   //express.json
+//   //previously needed to build ourselves or use third party middleware
+// });
+//*till here
+
 app.post("/signup", async (req, res) => {
-//   const userObj = {
-//     firstName: "Abhay",
-//     lastName: "Minhas",
-//     emailId: "abhayminhas1@gmail.com",
-//     password: "abhay",
-//   };
+  //after express.json req.body is exactly same as the format of User object
+  //replace the User({}) object with req.body
 
-  //if i want to save this user to our mongodb DB collection
-  //we will need to create a new instance of this model and add this database to this model and save that instance 
-  //creating a new User whith this data or 
-
-  // **technically creating a new instance of the user model**
-  // **new NameOfTheModel(pass the data of that new model that you want to save)**
-
-// **  const user = new User(userObj);
-//created new instance of user model
-    const user = new User({
-    firstName: "sachin",
-    lastName: "tendulkar",
-    emailId: "sachin@gmail.com",
-    password: "sachin@123",
-  });
-try{
-
-  await user.save();
-  res.send("User Added successfully");
-
-}
-catch(err){
-  //400->bad request
-  res.status(400).send("Error saving the user:"+err.message);
-}
-  //calling .save on the instance of the model this data will be saved onto a database and this function will return you a promise
-
-/* most of the mongoose functions 
-putting the data to database ,saving it
-,getting the data
-all of these functions methods and api's will return you a promise
-most of time we'll have to use async await
-//use await for user to save and make the post callback as async func
-*/
-
-res.send('user added successfully');
-
+  //Creating a new instance of the User model
+  const user = new User(req.body);
+  try {
+    await user.save();
+    res.send("User added sucessfully");
+  } catch (err) {
+    res.status(400).send("Error saving the user:" + err.message);
+  }
 });
-
 
 connectDB()
   .then(() => {
     console.log("Database connection established");
-    //proper way of connecting to the DB and start application and then start listning to the api calls
-    //once db connection is sucessfully established then we will do app.listen
     app.listen(7777, () => {
-      console.log("Server is successfully listening on port 7777...");
+      console.log("Server is sucessfully listening on the port 7777...");
     });
   })
   .catch((err) => {
-    console.error("Database cannot be connected");
+    console.log("Database cannot be connected");
   });
-
-
-
-  
