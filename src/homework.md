@@ -47,3 +47,8 @@ push all code to remote origin
 -JS object vs JSON (difference )-why and when to use
 -Add the express.json middleware to your app
 -Make your signup API dynamic to recive data form the end user(browser/postman/anyone outeside your server hitting that api can create a user)
+-User.findOne with duplicate email ids . which object will be returned 
+-API - get user by email
+-API - Feed API - GET /feed - get all the users form the database
+-**API - GET user by ID use mongoose function findById
+

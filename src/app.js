@@ -65,6 +65,62 @@ app.post("/signup", async (req, res) => {
   }
 });
 
+//Get user by email
+app.get("/user", async (req, res) => {
+  //read the req find the email
+  const userEmail = req.body.emailId;
+  //user in db with this email id
+  //use the keyword emailId as this is the fileld name
+  try {
+    const user = await User.findOne({emailId:userEmail});
+    //returns the first document that it finds , it returns the oldest document
+    //return first document which matches the query criteria 
+    //The conditions are cast to their respective SchemaTypes before the command is sent.
+    if(!user){
+      res.status(404).send("User not found");
+    }else{
+
+      res.send(user);
+    }
+
+    //key should match exactly with the schema field name ie emailId
+    //if wrong no throwing error if there is a typo
+
+    // const users = await User.find({ emailId: userEmail });
+    // //trying to find all the users with email id and sending back the response
+    // if (users.length === 0) {
+    //   res.status(404).send("User not found");
+    //   // 404 status code, commonly known as "Not Found", indicates that the server cannot locate the requested resource
+    // } else {
+    //   res.send(users);
+    //   //giving back the array of objects
+    //   //that array only has one object that is with my email id
+    // }
+  } catch (err) {
+    res.status(400).send("Something went wrong");
+  }
+  //pass a filter it takes a js object
+
+  // User.find({emailId:req.body.emailId});
+  //we can also directly write it like this
+});
+
+//Feed API - GET /feed - get all the users form the database
+app.get("/feed", async (req, res) => {
+  //whenever we want to get the data form the data base we should know which model you have to use what are you getting form the database
+  //if getting User s the we have to query using this
+
+  try {
+    const users = await User.find({});
+    //passing an empty filter in find will return all the documents in the collection
+    res.send(users);
+  } catch (err) {
+    res.status(400).send("Something went wrong");
+  }
+});
+
+
+
 connectDB()
   .then(() => {
     console.log("Database connection established");
@@ -75,3 +131,20 @@ connectDB()
   .catch((err) => {
     console.log("Database cannot be connected");
   });
+
+
+
+
+  /*
+  Note: conditions is optional, and if conditions is null or undefined, mongoose will send an empty findOne command to MongoDB, which will return an arbitrary document. If you're querying by _id, use findById() instead.
+
+Example:
+// Find one adventure whose `country` is 'Croatia', otherwise `null`
+await Adventure.findOne({ country: 'Croatia' }).exec();
+
+// Model.findOne() no longer accepts a callback
+
+// Select only the adventures name and length
+await Adventure.findOne({ country: 'Croatia' }, 'name length').exec();
+
+  */
