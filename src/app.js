@@ -72,14 +72,13 @@ app.get("/user", async (req, res) => {
   //user in db with this email id
   //use the keyword emailId as this is the fileld name
   try {
-    const user = await User.findOne({emailId:userEmail});
+    const user = await User.findOne({ emailId: userEmail });
     //returns the first document that it finds , it returns the oldest document
-    //return first document which matches the query criteria 
+    //return first document which matches the query criteria
     //The conditions are cast to their respective SchemaTypes before the command is sent.
-    if(!user){
+    if (!user) {
       res.status(404).send("User not found");
-    }else{
-
+    } else {
       res.send(user);
     }
 
@@ -119,7 +118,49 @@ app.get("/feed", async (req, res) => {
   }
 });
 
+//Delete a user form the database
+app.delete("/user", async (req, res) => {
+  const userId = req.body.userId;
+  try {
+    // findByIdAndDelete(id) is a shorthand for findOneAndDelete({ _id: id })
+    const users = await User.findByIdAndDelete({ _id: userId });
+    res.send("User deleted successfully");
+  } catch (err) {
+    res.status(400).send("Something went wrong");
+  }
+});
 
+//Update data of the user
+app.patch("/user", async (req, res) => {
+  const userId = req.body.userId;
+  const data = req.body;
+  // console.log(data);
+  try {
+    //*in data there is also a userId field but it is not created when data is updated
+    //what mongodb does is it ignores this field
+    //as there is nothing like userId in the schema
+    //if not present in schema it will not be added to the database
+    
+    const user = await User.findByIdAndUpdate({ _id: userId }, data, {
+      returnDocument: "after",
+      runValidators:true,
+    });//run the validations when the method is called
+    
+    // const user = await User.findByIdAndUpdate(userId,data,{returnDocument:"before"});
+    //*default value is before if not pass this returnDocument
+    //there is a option which is options.returnDocument
+    //when api will be called and update happen
+    //before will return the user document before the update was applied
+    //after return document after update
+    console.log(user);
+
+    //**findbyIdAndUpdate is calling findoneandUpdate behind the scenes
+    //findByIdAndUpdate and findOneAndUpdate is one and the same thing the difference is that in find in id we only give id and oneandupdate can also take other things
+    res.send("User updated sucessfully");
+  } catch (err) {
+    res.status(400).send("UPDATE FAILED:"+ err.message);
+  }
+});
 
 connectDB()
   .then(() => {
@@ -132,10 +173,7 @@ connectDB()
     console.log("Database cannot be connected");
   });
 
-
-
-
-  /*
+/*
   Note: conditions is optional, and if conditions is null or undefined, mongoose will send an empty findOne command to MongoDB, which will return an arbitrary document. If you're querying by _id, use findById() instead.
 
 Example:

@@ -13,26 +13,77 @@ const mongoose = require("mongoose");
 //const { Schema } = mongoose;
 // const blogSchema = new Schema({
 
-const userSchema = mongoose.Schema({
+
+//if the data of required: true field is not there then mongoose will not allow the insertion into the database
+const userSchema = new mongoose.Schema({
   firstName: {
     type: String,
+    required: true,
+    minLength: 4,
+    maxLength: 50,
   },
   lastName: {
     type: String,
   },
   emailId: {
     type: String,
+    lowercase:true,
+    required: true,
+    unique: true,
+    trim:true,
   },
   password: {
     type: String,
+    required: true,
   },
   age: {
     type: Number,
+    min:18,
+    
   },
   gender: {
     type: String,
+    validate(value){
+
+/*by default the validate method will only be called when new user is created new object
+but when patching an existing data this validate function will not run by itself 
+You will have to enabel it to run on updates also
+
+in Model.findByIdAndUpdate
+in options there is runvalidators
+*/
+
+      if(!["male","female","others"].includes(value)){
+        throw new Error("Gender data is not valid");
+        //we can add this validate function in anything 
+        //can add a complicated logic also 
+        //as soon as data is being put into the DB value will first go to this validate function
+        //if the validate function does not throw any error DB updated
+        //throw error then db will not be updated
+      }
+
+
+    }
   },
+  photoUrl:{
+    type:String,
+    default: "https://geographyandyou.com/images/user-profile.png",
+
+  },
+  about:{
+    type:String,
+    default:"This is a default about of the user!",
+  },
+  skills:{
+    type:[String],
+  },
+},{
+  timestamps:true ,
 });
+//timestamps:ture mongodb add a createdAT and UpdatedAt for every user who register and we don't have to add a extra field
+//array of skills
+
+
 //schema is defined and tells about the info about the user that is stored
 
 //now we create a mongoose model

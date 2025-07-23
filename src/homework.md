@@ -51,4 +51,17 @@ push all code to remote origin
 -API - get user by email
 -API - Feed API - GET /feed - get all the users form the database
 -**API - GET user by ID use mongoose function findById
+-Create a delete user API
+-Difference between patch and put
+-API - Update a user
+-Explore the Mongoose Documentation for MOdel methods
+-What are options in a Model.findOneAndUpdate method/API, explore more about it 
+-API - Update the user with the help of email ID instead of userId
 
+-*Put all the validation default value min length max length etc. user can add random stuff 
+-Explore schemaType options form the documentation
+-add required,unique,lowercase,min,minLength,trim
+-Add default
+-Create a custom validat functon for gender
+-Imporve the DB schema - PUT all appropriate validatioins on each field in schema
+-Add timestamps to the userSchema 
