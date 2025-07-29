@@ -65,3 +65,6 @@ push all code to remote origin
 -Create a custom validat functon for gender
 -Imporve the DB schema - PUT all appropriate validatioins on each field in schema
 -Add timestamps to the userSchema 
+
+-Add API level validation on patch request & signup post api
+-DATA Sanitization - Add API validation for each field

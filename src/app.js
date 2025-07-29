@@ -131,21 +131,47 @@ app.delete("/user", async (req, res) => {
 });
 
 //Update data of the user
-app.patch("/user", async (req, res) => {
-  const userId = req.body.userId;
+app.patch("/user/:userId", async (req, res) => {
+  const userId = req.params?.userId;
+  // keep ? after params so that if userId is not present your code will not fail
   const data = req.body;
+
   // console.log(data);
   try {
+    const ALLOWED_UPDATES = ["photoUrl", "about", "gender", "age", "skills"];
+
+    //   {
+    //     "userId":"6880788a979a1a9220ffe964",
+    //     "emailId":"aliaaaaa@bhatt.com",
+    //     "gender":"female",
+    //     "skills":["acting","drama","javascript"],
+    //     "xyz":"skhvkdbfj"
+    // }
+    const isUpdateAllowed = Object.keys(data).every((k) =>
+      ALLOWED_UPDATES.includes(k)
+    );
+
+    //looping through every keys is present in the allowed updates and checking that
+    // if any of this is not allowed then my is update allowed is false
+
+    if (!isUpdateAllowed) {
+      throw new Error("Update not allowed");
+    }
+    //update will not be allowed if sending random fields over here
+    if (data?.skills.length > 10) {
+      throw new Error("Skills cannot be more than 10");
+    }
+
     //*in data there is also a userId field but it is not created when data is updated
     //what mongodb does is it ignores this field
     //as there is nothing like userId in the schema
     //if not present in schema it will not be added to the database
-    
+
     const user = await User.findByIdAndUpdate({ _id: userId }, data, {
       returnDocument: "after",
-      runValidators:true,
-    });//run the validations when the method is called
-    
+      runValidators: true,
+    }); //run the validations when the method is called
+
     // const user = await User.findByIdAndUpdate(userId,data,{returnDocument:"before"});
     //*default value is before if not pass this returnDocument
     //there is a option which is options.returnDocument
@@ -158,7 +184,7 @@ app.patch("/user", async (req, res) => {
     //findByIdAndUpdate and findOneAndUpdate is one and the same thing the difference is that in find in id we only give id and oneandupdate can also take other things
     res.send("User updated sucessfully");
   } catch (err) {
-    res.status(400).send("UPDATE FAILED:"+ err.message);
+    res.status(400).send("UPDATE FAILED:" + err.message);
   }
 });
 
