@@ -71,3 +71,4 @@ push all code to remote origin
 -Install validator
 -Explore validator library functions and Use validator funcs for password,email,URL
 
+- NEVER TRUST req.body
