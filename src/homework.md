@@ -68,3 +68,6 @@ push all code to remote origin
 
 -Add API level validation on patch request & signup post api
 -DATA Sanitization - Add API validation for each field
+-Install validator
+-Explore validator library functions and Use validator funcs for password,email,URL
+
