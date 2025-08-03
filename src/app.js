@@ -6,6 +6,10 @@ const { connectDB } = require("./config/database");
 
 const User = require("./models/user");
 
+const { validateSignUpData } = require("./utils/validation");
+
+const bcrypt = require("bcrypt");
+
 //how to use the middleware??like this
 app.use(express.json());
 //middleware activated for all the routes
@@ -52,16 +56,60 @@ app.use(express.json());
 //*till here
 
 app.post("/signup", async (req, res) => {
-  //after express.json req.body is exactly same as the format of User object
-  //replace the User({}) object with req.body
-
-  //Creating a new instance of the User model
-  const user = new User(req.body);
+  //first thing that should happen is  Validation of data
   try {
+    validateSignUpData(req);
+    //throwing error by validation func will catched by catche block -- write in try catch
+
+    const { firstName, lastName, emailId, password } = req.body;
+
+    //Encrypt the password
+    const passwordHash = await bcrypt.hash(password, 10);
+    console.log(passwordHash);
+
+    //after express.json req.body is exactly same as the format of User object
+    //replace the User({}) object with req.body
+
+    //Creating a new instance of the User model
+    const user = new User({
+      firstName,
+      lastName,
+      emailId,
+      password: passwordHash,
+    });
     await user.save();
     res.send("User added sucessfully");
   } catch (err) {
     res.status(400).send("Error saving the user:" + err.message);
+  }
+});
+
+app.post("/login", async (req, res) => {
+  try {
+    const { emailId, password } = req.body;
+    //write emailId validation ,no password validation is required as anything can be there
+
+    const user = await User.findOne({emailId:emailId});
+    //if email is not there/not valid
+    //user will be undefined or null
+
+    if(!user){
+      throw new Error("Invalid credentials");
+    }
+
+
+    const isPasswordValid = await bcrypt.compare(password,user.password);//plaintxtpwd + hash return true/false
+
+    if(isPasswordValid){
+      res.send("Login Successful!!!");
+
+    }
+    else{
+      throw new Error("Invalid credentials");
+    }
+    
+  } catch (err) {
+    res.status(400).send("ERROR: " + err.message);
   }
 });
 

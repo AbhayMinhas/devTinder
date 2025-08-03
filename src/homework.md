@@ -72,3 +72,9 @@ push all code to remote origin
 -Explore validator library functions and Use validator funcs for password,email,URL
 
 - NEVER TRUST req.body
+
+- Validate data in Signup API(create a helper/utility function make habit of it)
+- Install bcrypt package
+- Create PasswordHash using bcrypt.hash & save the user with encypted password
+- Create login API
+- Compare passwords and throw error if email or password is invalid
