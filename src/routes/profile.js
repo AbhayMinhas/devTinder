@@ -2,7 +2,10 @@ const express = require("express");
 
 const profileRouter = express.Router();
 const { userAuth } = require("../middlewares/auth");
-profileRouter.get("/profile", userAuth, async (req, res) => {
+const {validateEditProfileData}= require("../utils/validation");
+
+
+profileRouter.get("/profile/view", userAuth, async (req, res) => {
   try {
     // const cookies = req.cookies;
 
@@ -30,6 +33,29 @@ profileRouter.get("/profile", userAuth, async (req, res) => {
 
     const user = req.user;
     res.send(user);
+  } catch (err) {
+    res.status(400).send("ERROR : " + err.message);
+  }
+});
+
+profileRouter.patch("/profile/edit", userAuth,userAuth, async (req, res) => {
+  try {
+    if(!validateEditProfileData(req)){
+      throw new Error("Invalid Edit Request");
+    };
+
+    const loggedInUser = req.user;
+    
+
+    Object.keys(req.body).forEach((key)=>(loggedInUser[key]=req.body[key]));
+    
+    await loggedInUser.save();
+
+    res.json({message:`${loggedInUser.firstName}, your profile updated successfull`,data:loggedInUser});
+    //can also send the data in the json format
+    //this is the good way of sending the response
+    //after updating the data in the database i can also update the profile on the ui also with the help of updated data
+
   } catch (err) {
     res.status(400).send("ERROR : " + err.message);
   }

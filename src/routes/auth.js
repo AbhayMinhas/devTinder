@@ -71,6 +71,17 @@ authRouter.post("/login", async (req, res) => {
   }
 });
 
+authRouter.post("/logout",async (req,res)=>{
+  //Do clean up activities for sessions or want to do logs etc before but for this app this is enough
+  //no need to authenticate user either way login or not can use this api
+  res.cookie("token",null,{
+    expires: new Date(Date.now()),
+  })
+ .send("Logout Successful!!");
+//chaining the methods
+
+});
+
 module.exports = authRouter;
 //assume that this is inside the auth file so this router is auth router
 //authRouter write like this for better understanding

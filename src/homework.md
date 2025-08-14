@@ -99,6 +99,10 @@ push all code to remote origin
 -Create a list of all API you can think of in DEV Tinder
 -Group multiple routes under respective routers
 -Read documentation for express.Router
--Create routes forlder for managing auth,profile , request routers
+-Create routes folder for managing auth,profile , request routers
 -Create authRouter,profileRouter,requestRouter
 -Import these routers in app.js
+-Create POST /logout API
+-Create PATCH /profile/edit
+-Create PATCH /profile/password API => forgot password API
+-Make sure you validate all the data in every POST, PATCH APIs.
