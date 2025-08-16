@@ -54,6 +54,10 @@ const userSchema = new mongoose.Schema(
     },
     gender: {
       type: String,
+      enum:{
+        values:["male","female","others"],
+        message: `{VALUE} is not a valid gender type`
+      },
       validate(value) {
         /*by default the validate method will only be called when new user is created new object
 but when patching an existing data this validate function will not run by itself 
@@ -94,6 +98,13 @@ in options there is runvalidators
     timestamps: true,
   }
 );
+// User.find({firstName:"Abhay",lastName:"Minhas"});
+// userSchema.index({firstName:1,lastName:1});
+// userSchema.index({firstName:1});
+// userSchema.index({gender:1});
+//you can create an index on skills gender age 
+
+
 //timestamps:ture mongodb add a createdAT and UpdatedAt for every user who register and we don't have to add a extra field
 //array of skills
 //schema is defined and tells about the info about the user that is stored

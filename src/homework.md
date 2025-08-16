@@ -106,3 +106,18 @@ push all code to remote origin
 -Create PATCH /profile/edit
 -Create PATCH /profile/password API => forgot password API
 -Make sure you validate all the data in every POST, PATCH APIs.
+
+
+-Create Connection Request Schema
+-Send Connection Request API
+-Proper validation of DATA
+-Think about all corner cases
+-$or query $and query in mongoose - https://www.mongodb.com/docs/manual/reference/operator/query-logical/
+-schema.pre("save") function
+-Read more about indexes in MongoDB
+-Why do we need index in DB?
+-What is the advantages and disadvantages of creating?
+-what if we create a lot of index what are its disadvantage
+-Read this article about compound 
+indexes - https://www.mongodb.com/docs/manual/core/indexes/index-types/index-compound/
+-ALWAYS THINK ABOUT CORNER CASES ANY ATTACKER CAN DO HARM IF API IS NOT STRONG
