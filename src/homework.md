@@ -107,7 +107,6 @@ push all code to remote origin
 -Create PATCH /profile/password API => forgot password API
 -Make sure you validate all the data in every POST, PATCH APIs.
 
-
 -Create Connection Request Schema
 -Send Connection Request API
 -Proper validation of DATA
@@ -118,6 +117,57 @@ push all code to remote origin
 -Why do we need index in DB?
 -What is the advantages and disadvantages of creating?
 -what if we create a lot of index what are its disadvantage
--Read this article about compound 
+-Read this article about compound
 indexes - https://www.mongodb.com/docs/manual/core/indexes/index-types/index-compound/
 -ALWAYS THINK ABOUT CORNER CASES ANY ATTACKER CAN DO HARM IF API IS NOT STRONG
+
+- Write code with proper validations for POST /request/review/:status/:requestId
+- Thought process - POST vs GET
+-Read about ref and populate and relation between the two - https://mongoosejs.com/docs/populate.html
+-Create GET /user/request/received with all the checks
+-Create GET /user/connections
+
+-logic for GET /feed API
+-Explore the $nin, $and, $ne and other query operators
+-Pagination
+
+
+NOTES:
+a very good standard practice in get api is to user query params
+/feed?page=1&limit=10 => first 10 users (users form 1-10) => .skip(0) & .limit(10)
+
+/feed?page=2&Limit=10 => 11-20 => .skip(10) & .limit(10)
+
+/feed?page=3&Limit=10 => 21-30 => .skip(20) & .limit(10)
+
+IN MONGODB WE HAVE TWO IMPORTANT FUNCTION
+.skip() & .limit()
+limit means how many documents do you want 
+skip means how many documents do you skip form the starting
+
+.skip(0) & .limit(10) gives first 10 users
+//take by default skip as 0 and if don't pass anything in limit it will take limit as all the users
+
+//humans or the api understands  this page & limit concept and mongodb understands this .skip & .limit concept
+
+//when ui call api --> give page 5
+//behind the scenes you skipping 40 records and then you will be getting
+from 41 to 50
+
+skip = (page-1)*limit
+
+//there can be a lot or 
+improvements/enhancements in our api's
+//suppose 1 lac users and logged in user have javascript skills then we can show them people with similar skills 
+//or show logged in users people of same age range and gender opposite or same
+//We can also add filters over here 
+// suppose the user want to see all the people with javascript as a skill or  react as a skill
+// we can do alot of enhancements in this 
+
+///****KEEP YOUR RESPONSES STANDARD IN SAME FORMAT 
+//MAKE A CONTRACT AND TRY TO FOLLOW THE SAME
+//ALWAYS SEND THE RESPONSE IN JSON OR ANYOTHER STANDARD FORMAT
+//FRONTEND WILL CALL THESE API'S SO THEY SHOULD HAVE A STANDARD WAY TO HANDLE THESE API'S
+//THE FRONTEND SHOULD KNOW HOW TO READ THE ERRORS AND GET THE DATA
+
+//GENERALLY WE CREATE AN OBJECT AND SEND DATA LIKE THIS -- res.json({data:user,message}); and message can also be there
