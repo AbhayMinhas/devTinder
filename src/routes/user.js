@@ -101,7 +101,7 @@ userRouter.get("/feed", userAuth, async (req, res) => {
     limit = limit > 50 ? 50 : limit;
     //if someone pass 1 lac and no sanitization it will hang our db and it will freeze the db
 
-    const skip = (page - 1) * limit;
+    const skip = (page - 1) * limit; 
 
     //Find all the connection request (sent+ reeived)
     // const connectionRequests = await ConnectionRequest.find({
@@ -136,7 +136,7 @@ userRouter.get("/feed", userAuth, async (req, res) => {
     //finding all the users whose id is not present in the hide user array
     //Array.form() --> function to convert the set into an array
 
-    res.json({data: users});
+    res.json( users);
 
     //suppose we have 1000 of users
     //we don't want my feed api to send 999 users to a new users in feed api

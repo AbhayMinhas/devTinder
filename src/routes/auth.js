@@ -32,8 +32,13 @@ authRouter.post("/signup", async (req, res) => {
       emailId,
       password: passwordHash,
     });
-    await user.save();
-    res.send("User added sucessfully");
+    const savedUser = await user.save();
+    const token = await savedUser.getJWT(); //for whatever current user is this user token will come back
+
+      res.cookie("token", token, {
+        expires: new Date(Date.now() + 8 * 3600000),
+      }); //cookie expires in 8 hrs
+    res.json({ message: "User added sucessfully", data: savedUser });
   } catch (err) {
     res.status(400).send("Error saving the user:" + err.message);
   }
@@ -62,7 +67,7 @@ authRouter.post("/login", async (req, res) => {
         expires: new Date(Date.now() + 8 * 3600000),
       }); //cookie expires in 8 hrs
 
-      res.send("Login Successful!!!");
+      res.send(user);
     } else {
       throw new Error("Invalid credentials");
     }
@@ -71,15 +76,15 @@ authRouter.post("/login", async (req, res) => {
   }
 });
 
-authRouter.post("/logout",async (req,res)=>{
+authRouter.post("/logout", async (req, res) => {
   //Do clean up activities for sessions or want to do logs etc before but for this app this is enough
   //no need to authenticate user either way login or not can use this api
-  res.cookie("token",null,{
-    expires: new Date(Date.now()),
-  })
- .send("Logout Successful!!");
-//chaining the methods
-
+  res
+    .cookie("token", null, {
+      expires: new Date(Date.now()),
+    })
+    .send("Logout Successful!!");
+  //chaining the methods
 });
 
 module.exports = authRouter;

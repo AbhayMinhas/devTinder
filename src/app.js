@@ -1,8 +1,15 @@
 const express = require("express");
 const app = express();
 const { connectDB } = require("./config/database");
-const cookieParser = require("cookie-parser");
+const cookieParser = require("cookie-parser"); 
+const cors = require('cors'); 
 
+app.use(cors(
+  {
+    origin: "http://localhost:5173",
+    credentials:true,
+  }
+));//with credentials true even if we are on http not https we can still send the cookies and receive the data safely on the network 
 app.use(express.json());
 app.use(cookieParser());
 
@@ -25,5 +32,5 @@ connectDB()
     });
   })
   .catch((err) => {
-    console.log("Database cannot be connected");
+    console.log("Database cannot be connected"+err);
   });
