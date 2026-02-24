@@ -71,7 +71,7 @@ paymentRouter.post("/payment/webhook", async (req, res) => {
     //which is a hash signature sent with each payload created using webhook signature, this req header was something that you need to verify.
 
     // const webhookSignature = req.headers["X-Razorpay-Signature"];
-    const webhookSignature = req.get["X-Razorpay-Signature"];
+    const webhookSignature = req.get("X-Razorpay-Signature");
     const isWebhookValid = validateWebhookSignature(
       JSON.stringify(req.body),
       webhookSignature,
