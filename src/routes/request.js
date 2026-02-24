@@ -5,6 +5,8 @@ const { userAuth } = require("../middlewares/auth");
 
 const ConnectionRequest = require("../models/connectionRequest");
 const User = require("../models/user");
+
+const sendEmail = require("../utils/sendEmail");
 //toUserId ,the connection req is sent to user id
 //formUserId, is the person who is logged in already
 requestRouter.post(
@@ -65,6 +67,10 @@ requestRouter.post(
       });
 
       const data = await connectionRequest.save();
+
+      const emailRes = await sendEmail.run("A new friend request form "+req.user.firstName, req.user.firstName + " is " + status + " in " + toUser.firstName);//pass the text and subject also
+
+      console.log(emailRes);
 
       res.json({
         message:
