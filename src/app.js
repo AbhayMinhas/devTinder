@@ -1,18 +1,20 @@
 const express = require("express");
 const app = express();
 const { connectDB } = require("./config/database");
-const cookieParser = require("cookie-parser"); 
-const cors = require('cors');
-require('dotenv').config();
+const cookieParser = require("cookie-parser");
+const cors = require("cors");
+const http = require("http");
 
-require('./utils/cronjob');
+require("dotenv").config();
 
-app.use(cors(
-  {
+require("./utils/cronjob");
+
+app.use(
+  cors({
     origin: "http://localhost:5173",
-    credentials:true,
-  }
-));//with credentials true even if we are on http not https we can still send the cookies and receive the data safely on the network 
+    credentials: true,
+  }),
+); //with credentials true even if we are on http not https we can still send the cookies and receive the data safely on the network
 app.use(express.json());
 app.use(cookieParser());
 
@@ -21,21 +23,27 @@ const profileRouter = require("./routes/profile");
 const requestRouter = require("./routes/request");
 const userRouter = require("./routes/user");
 const paymentRouter = require("./routes/payment");
+const initializeSocket = require("./utils/socket");
+const chatRouter = require("./routes/chat");
 
-app.use("/",authRouter);
-app.use("/",profileRouter);
-app.use("/",requestRouter);
-app.use("/",userRouter);
-app.use("/",paymentRouter);
+app.use("/", authRouter);
+app.use("/", profileRouter);
+app.use("/", requestRouter);
+app.use("/", userRouter);
+app.use("/", paymentRouter);
+app.use("/", chatRouter);
 
+const server = http.createServer(app);
+
+initializeSocket(server);
 
 connectDB()
   .then(() => {
     console.log("Database connection established");
-    app.listen(process.env.PORT, () => {
+    server.listen(process.env.PORT, () => {
       console.log("Server is sucessfully listening on the port 7777...");
     });
   })
   .catch((err) => {
-    console.log("Database cannot be connected"+err);
+    console.log("Database cannot be connected" + err);
   });
